@@ -24,6 +24,7 @@ from inventory_core import (
     update_product,
     update_product_quantity,
     delete_product_db,
+    get_inventory_value,
 )
 
 def img_to_base64(path):
@@ -128,9 +129,10 @@ if page == "Dashboard":
     revenue = get_total_revenue()
     best = get_best_selling_product()
     low_stock = get_low_stock_items()
+    inventory_value = get_inventory_value()
 
     # ================= METRICS =================
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3, col4 = st.columns(4)
 
     col1.metric("📦 Total Products", len(products))
     col2.metric("💰 Total Revenue", f"${revenue:.2f}")
@@ -143,6 +145,10 @@ if page == "Dashboard":
         )
     else:
         col3.metric("🏆 Best Seller", "N/A")
+    col4.metric(
+        "💲 Inventory Value",
+        f"${inventory_value:,.2f}"
+    )
 
     st.divider()
 

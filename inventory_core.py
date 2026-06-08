@@ -438,6 +438,20 @@ def update_product(product_id, name, price, quantity, reorder_level):
     except Exception as e:
         conn.close()
         return {"success": False, "message": str(e)}
+    
+def get_inventory_value():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT SUM(price * quantity)
+        FROM Products
+    """)
+
+    result = cursor.fetchone()[0]
+    conn.close()
+
+    return result or 0.0
 
 def smart_reorder_df():
     conn = get_connection()
