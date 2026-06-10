@@ -10,6 +10,19 @@ AI-powered inventory and order management system built with Python, SQLite, Stre
 - Revenue analytics
 - AI demand forecasting
 - Interactive dashboards and charts
+## Screenshots
+
+### Dashboard
+
+![Dashboard](screenshots/dashboard.png)
+
+### Product Management
+
+![Products](screenshots/products.png)
+
+### AI Forecasting
+
+![AI Forecast](screenshots/ai-forecast.png)
 
 ## Technologies Used
 
