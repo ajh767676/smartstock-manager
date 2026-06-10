@@ -2,14 +2,45 @@
 
 AI-powered inventory and order management system built with Python, SQLite, Streamlit, and machine learning forecasting.
 
+## Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/ajh767676/smartstock-manager.git
+cd smartstock-manager
+```
+
+Create and activate a virtual environment:
+
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Run the application:
+
+```bash
+streamlit run app.py
+```
+
 ## Features
 
 - Inventory tracking
 - Order management
 - Low-stock alerts
 - Revenue analytics
+- Inventory value tracking
 - AI demand forecasting
 - Interactive dashboards and charts
+- CSV product export
+
 ## Screenshots
 
 ### Dashboard
@@ -35,11 +66,13 @@ AI-powered inventory and order management system built with Python, SQLite, Stre
 
 ## Purpose
 
-This project was designed to simulate a real-world inventory management system for businesses while demonstrating software development, database management, and machine learning concepts.
+This project was designed to simulate a real-world inventory management system for small businesses while demonstrating software development, database management, data analytics, and machine learning concepts.
 
-## How to Run
+## Future Enhancements
 
-1. Install required packages
-2. Run:
-```bash
-streamlit run app.py
+- Order cancellation with inventory restoration
+- User authentication and role management
+- CSV import functionality
+- Enhanced AI forecasting models
+- Multi-item order support
+- Cloud deployment
