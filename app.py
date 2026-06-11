@@ -213,6 +213,10 @@ elif page == "Products":
         if "product_error" in st.session_state:
             st.error(st.session_state["product_error"])
             del st.session_state["product_error"]
+        
+        if "csv_import_success" in st.session_state:
+            st.success(st.session_state["csv_import_success"])
+            del st.session_state["csv_import_success"]
 
         # ✅ Action menu
         action = st.selectbox(
@@ -322,13 +326,33 @@ elif page == "Products":
             )
 
             if uploaded_file is not None:
-                import pandas as pd
-
                 df = pd.read_csv(uploaded_file)
 
-                st.dataframe(df, use_container_width=True)
+                required_columns = {"name", "price", "quantity", "reorder_level"}
 
-                st.success(f"Loaded {len(df)} products from CSV")
+                if not required_columns.issubset(df.columns):
+                    st.error("CSV must contain: name, price, quantity, reorder_level")
+                else:
+                    st.dataframe(df, use_container_width=True)
+
+                    if st.button("Import Products"):
+                        imported_count = 0
+
+                        for _, row in df.iterrows():
+                            result = add_product_db(
+                                row["name"],
+                                float(row["price"]),
+                                int(row["quantity"]),
+                                int(row["reorder_level"]),
+                                None
+                            )
+
+                            if result["success"]:
+                                imported_count += 1
+
+                        st.session_state["csv_import_success"] = f"Imported {imported_count} products successfully!"
+                        st.rerun()
+
         st.divider()
 
     # ================= RIGHT SIDE =================
