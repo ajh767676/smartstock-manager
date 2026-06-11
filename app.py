@@ -328,6 +328,19 @@ elif page == "Products":
             if uploaded_file is not None:
                 df = pd.read_csv(uploaded_file)
 
+                existing_products = get_products()
+
+                duplicates = []
+
+                for product_name in df["name"]:
+                    if product_name.lower() in existing_products["name"].str.lower().values:
+                        duplicates.append(product_name)
+
+                if duplicates:
+                    st.warning(
+                        f"Products already exist and quantities will be added: {', '.join(duplicates)}"
+                    )
+
                 required_columns = {"name", "price", "quantity", "reorder_level"}
 
                 if not required_columns.issubset(df.columns):
