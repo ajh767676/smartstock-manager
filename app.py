@@ -590,7 +590,13 @@ elif page == "Orders":
             orders["price"] = orders["price"].apply(lambda x: f"${x:.2f}")
             orders["total_price"] = orders["total_price"].apply(lambda x: f"${x:.2f}")
 
-            st.dataframe(orders, use_container_width=True)
+            display_orders = orders.drop(columns=["product_id"])
+
+            st.dataframe(
+                display_orders,
+                use_container_width=True,
+                hide_index=True
+            )
 
             st.subheader("❌ Cancel Order")
 
