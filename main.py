@@ -28,8 +28,7 @@ def add_product():
     price = float(input("Enter price: "))
     quantity = int(input("Enter quantity: "))
     reorder_level = int(input("Enter reorder level: "))
-    image_url = st.text_input("Image URL (optional)")
-
+    
 
     cursor.execute("""
         INSERT INTO Products (name, price, quantity, reorder_level)
