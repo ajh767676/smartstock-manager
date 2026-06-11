@@ -75,7 +75,6 @@ This project was designed to simulate a real-world inventory management system f
 
 ## Future Enhancements
 
-- Order cancellation with inventory restoration
 - User authentication and role management
 - CSV import functionality
 - Enhanced AI forecasting models
