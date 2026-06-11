@@ -1,5 +1,10 @@
 # SmartStock Manager
 
+![Python Badge](https://img.shields.io/badge/Python-3.11-blue)
+![SQLite Badge](https://img.shields.io/badge/Database-SQLite-green)
+![Streamlit Badge](https://img.shields.io/badge/UI-Streamlit-red)
+![Scikit-Learn Badge](https://img.shields.io/badge/ML-Scikit--Learn-orange)
+
 AI-powered inventory and order management system built with Python, SQLite, Streamlit, and machine learning forecasting.
 
 ## Installation
