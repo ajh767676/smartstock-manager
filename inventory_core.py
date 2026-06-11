@@ -171,21 +171,25 @@ def get_orders_with_total():
     return df
 
 
+
 def delete_order_db(order_id):
     conn = get_connection()
     cursor = conn.cursor()
 
+    # Find all items in this order
     cursor.execute("""
         SELECT product_id, quantity
         FROM OrderItems
         WHERE order_id = ?
-    """, (order_id,))
+    """, (int(order_id),))
+
     items = cursor.fetchall()
 
     if not items:
         conn.close()
         return {"success": False, "message": "Order not found."}
 
+    # Restore product quantities
     for product_id, qty in items:
         cursor.execute("""
             UPDATE Products
@@ -193,13 +197,17 @@ def delete_order_db(order_id):
             WHERE product_id = ?
         """, (qty, product_id))
 
-    cursor.execute("DELETE FROM OrderItems WHERE order_id = ?", (order_id,))
-    cursor.execute("DELETE FROM Orders WHERE order_id = ?", (order_id,))
+    # Delete order items first, then order
+    cursor.execute("DELETE FROM OrderItems WHERE order_id = ?", (int(order_id),))
+    cursor.execute("DELETE FROM Orders WHERE order_id = ?", (int(order_id),))
 
     conn.commit()
     conn.close()
 
-    return {"success": True, "message": f"Order {order_id} deleted and inventory restored."}
+    return {
+        "success": True,
+        "message": f"Order {order_id} cancelled and inventory restored."
+    }
 
 
 # ---------------- REPORTS ----------------

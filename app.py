@@ -25,6 +25,7 @@ from inventory_core import (
     update_product_quantity,
     delete_product_db,
     get_inventory_value,
+    delete_order_db,
 )
 
 def img_to_base64(path):
@@ -590,7 +591,26 @@ elif page == "Orders":
             orders["total_price"] = orders["total_price"].apply(lambda x: f"${x:.2f}")
 
             st.dataframe(orders, use_container_width=True)
-        else:
-            st.info("No orders yet.")
+
+            st.subheader("❌ Cancel Order")
+
+            order_ids = sorted(orders["order_id"].unique())
+
+            selected_order = st.selectbox(
+                "Select Order to Cancel",
+                order_ids
+        )
+
+        if st.button("Cancel Selected Order"):
+            result = delete_order_db(selected_order)
+
+            if result["success"]:
+                st.success(result["message"])
+                st.rerun()
+            else:
+                st.error(result["message"])
+
+else:
+    st.info("No orders yet.")
 
 
