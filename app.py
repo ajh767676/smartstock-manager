@@ -592,6 +592,14 @@ elif page == "Orders":
 
             display_orders = orders.drop(columns=["product_id"])
 
+            display_orders = display_orders.rename(columns={
+                "order_id": "Order ID",
+                "name": "Product",
+                "quantity": "Quantity",
+                "price": "Price",
+                "total_price": "Total"
+            })
+
             st.dataframe(
                 display_orders,
                 use_container_width=True,
