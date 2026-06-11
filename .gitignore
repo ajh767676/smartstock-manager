@@ -3,3 +3,5 @@ __pycache__/
 *.pyc
 .streamlit/
 inventory.db
+test_products.csv
+test_products2.csv
