@@ -217,7 +217,7 @@ elif page == "Products":
         # ✅ Action menu
         action = st.selectbox(
             "Choose Product Action",
-            ["Add Product", "Edit Product", "Delete Product"],
+            ["Add Product", "Edit Product", "Delete Product", "Import CSV"],
             key="product_action"
         )
         
@@ -308,6 +308,27 @@ elif page == "Products":
                         st.rerun()
                     else:
                         st.warning("Please confirm deletion")
+       
+
+        # ================= CSV Upload =================
+
+        elif action == "Import CSV":
+
+            st.markdown("### 📂 Import Products CSV")
+
+            uploaded_file = st.file_uploader(
+                "Upload CSV File",
+                type=["csv"]
+            )
+
+            if uploaded_file is not None:
+                import pandas as pd
+
+                df = pd.read_csv(uploaded_file)
+
+                st.dataframe(df, use_container_width=True)
+
+                st.success(f"Loaded {len(df)} products from CSV")
         st.divider()
 
     # ================= RIGHT SIDE =================
