@@ -76,6 +76,9 @@ if not st.session_state["logged_in"]:
             st.rerun()
         else:
             st.error("Invalid username or password")
+    if st.button("Continue as Demo User"):
+        st.session_state["logged_in"] = True
+        st.rerun()
 
     st.info("No account? Create one below.")
 
