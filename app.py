@@ -26,6 +26,7 @@ from inventory_core import (
     delete_product_db,
     get_inventory_value,
     delete_order_db,
+    init_database,
 )
 
 def img_to_base64(path):
@@ -55,6 +56,8 @@ def img_to_base64(path):
     except:
         return ""
 
+
+init_database()
 # Page config
 st.set_page_config(page_title="Inventory Dashboard", layout="wide")
 
