@@ -119,7 +119,7 @@ st.sidebar.markdown("---")
 
 if st.sidebar.button("🗑 Reset Demo Data"):
     reset_database()
-    st.sidebar.success("Database reset!")
+    st.success("Demo data loaded successfully!")
     st.rerun()
 if st.sidebar.button("Logout"):
     st.session_state["logged_in"] = False

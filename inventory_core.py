@@ -340,6 +340,52 @@ def reset_database():
     cursor.execute("DELETE FROM sqlite_sequence WHERE name='Orders'")
     cursor.execute("DELETE FROM sqlite_sequence WHERE name='Products'")
 
+    demo_products = [
+        ("chips", 1.00, 50, 10, None),
+        ("soda", 1.25, 40, 10, None),
+        ("candy", 1.75, 30, 8, None),
+        ("water", 0.50, 60, 15, None),
+        ("energy drink", 3.25, 12, 5, None),
+        ("protein bar", 2.25, 18, 6, None),
+    ]
+
+    cursor.executemany("""
+        INSERT INTO Products (name, price, quantity, reorder_level, image_url)
+        VALUES (?, ?, ?, ?, ?)
+    """, demo_products)
+
+    demo_orders = [
+        ("2026-06-01", 1, 12),
+        ("2026-06-02", 2, 8),
+        ("2026-06-03", 3, 6),
+        ("2026-06-04", 1, 10),
+        ("2026-06-05", 4, 15),
+        ("2026-06-06", 5, 7),
+        ("2026-06-07", 6, 5),
+        ("2026-06-08", 1, 9),
+        ("2026-06-09", 5, 6),
+        ("2026-06-10", 2, 10),
+    ]
+
+    for order_date, product_id, qty in demo_orders:
+        cursor.execute("""
+            INSERT INTO Orders (order_date)
+            VALUES (?)
+        """, (order_date,))
+
+        order_id = cursor.lastrowid
+
+        cursor.execute("""
+            INSERT INTO OrderItems (order_id, product_id, quantity)
+            VALUES (?, ?, ?)
+        """, (order_id, product_id, qty))
+
+        cursor.execute("""
+            UPDATE Products
+            SET quantity = quantity - ?
+            WHERE product_id = ?
+        """, (qty, product_id))
+
     conn.commit()
     conn.close()
 
