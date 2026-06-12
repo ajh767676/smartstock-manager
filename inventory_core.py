@@ -10,6 +10,7 @@ def get_connection():
     return sqlite3.connect(DB_NAME)
 
 
+
 # ---------------- PRODUCTS ----------------
 
 def get_products():
@@ -342,10 +343,40 @@ def reset_database():
     conn.commit()
     conn.close()
 
-# Database has user table
-def create_users_table():
+# ---------------- DATABASE INIT ----------------
+
+def init_database():
     conn = get_connection()
     cursor = conn.cursor()
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS Products (
+            product_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            price REAL NOT NULL,
+            quantity INTEGER NOT NULL,
+            reorder_level INTEGER NOT NULL,
+            image_url TEXT
+        )
+    """)
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS Orders (
+            order_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            order_date TEXT
+        )
+    """)
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS OrderItems (
+            order_item_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            order_id INTEGER NOT NULL,
+            product_id INTEGER NOT NULL,
+            quantity INTEGER NOT NULL,
+            FOREIGN KEY(order_id) REFERENCES Orders(order_id),
+            FOREIGN KEY(product_id) REFERENCES Products(product_id)
+        )
+    """)
 
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS Users (
@@ -530,5 +561,5 @@ def smart_reorder_df():
     conn.close()
     return pd.DataFrame(results)
 
-# Ensure Users table exists
-create_users_table()
+# Ensure database tables exist
+init_database()
