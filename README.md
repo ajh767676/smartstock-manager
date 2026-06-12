@@ -5,7 +5,70 @@
 ![Streamlit Badge](https://img.shields.io/badge/UI-Streamlit-red)
 ![Scikit-Learn Badge](https://img.shields.io/badge/ML-Scikit--Learn-orange)
 
-AI-powered inventory and order management system built with Python, SQLite, Streamlit, and machine learning forecasting.
+AI-powered inventory and order management system built with Python, SQLite, Streamlit, Plotly, and machine learning forecasting.
+
+## Live Demo
+
+🚀 Live Application:
+
+https://smartstock-manager.streamlit.app/
+
+### Demo Access
+
+Use the built-in Demo User option on the login page or create your own account.
+
+---
+
+## Features
+
+### Inventory Management
+- Add, edit, and delete products
+- Inventory quantity tracking
+- Product image support
+- Low-stock alerts
+- Inventory value calculations
+
+### Order Management
+- Create customer orders
+- Automatic inventory updates
+- Order history tracking
+- Order cancellation with inventory restoration
+
+### Analytics Dashboard
+- Revenue tracking
+- Best-selling product identification
+- Inventory value metrics
+- Sales analytics visualizations
+
+### AI Forecasting
+- Demand forecasting using Linear Regression
+- Smart reorder recommendations
+- Inventory planning support
+
+### Data Import / Export
+- CSV product import
+- CSV product export
+- Bulk inventory updates
+
+### Security
+- User registration
+- User authentication
+- Password hashing
+- Session management
+
+---
+
+## Technologies Used
+
+- Python
+- SQLite
+- Streamlit
+- Pandas
+- Plotly
+- Scikit-Learn
+- Git / GitHub
+
+---
 
 ## Installation
 
@@ -35,16 +98,7 @@ Run the application:
 streamlit run app.py
 ```
 
-## Features
-
-- Inventory tracking
-- Order management
-- Low-stock alerts
-- Revenue analytics
-- Inventory value tracking
-- AI demand forecasting
-- Interactive dashboards and charts
-- CSV product export
+---
 
 ## Screenshots
 
@@ -60,22 +114,28 @@ streamlit run app.py
 
 ![AI Forecast](screenshots/ai-forecast.png)
 
-## Technologies Used
+---
 
-- Python
-- SQLite
-- Streamlit
-- Pandas
-- Scikit-learn
-- Plotly
+## Project Purpose
 
-## Purpose
+SmartStock Manager was developed as a Computer Science capstone project to demonstrate:
 
-This project was designed to simulate a real-world inventory management system for small businesses while demonstrating software development, database management, data analytics, and machine learning concepts.
+- Software Development
+- Database Design
+- Data Analytics
+- Machine Learning Integration
+- User Authentication
+- Business Process Automation
+
+The project simulates a real-world inventory and order management platform for small businesses.
+
+---
 
 ## Future Enhancements
 
-- User authentication and role management
-- Enhanced AI forecasting models
 - Multi-item order support
-- Cloud deployment
+- User role management (Admin / Employee)
+- Enhanced forecasting models
+- Cloud database integration
+- Email notifications for low inventory
+- REST API integration
