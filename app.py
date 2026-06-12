@@ -117,7 +117,7 @@ elif section == "Insights":
     page = st.sidebar.radio("", ["Analytics", "AI Forecast"])
 st.sidebar.markdown("---")
 
-if st.sidebar.button("🗑 Reset Demo Data"):
+if st.sidebar.button("🧪 Load Demo Data"):
     reset_database()
     st.success("Demo data loaded successfully!")
     st.rerun()
@@ -283,7 +283,7 @@ elif page == "Products":
                     result = update_product(pid, new_name, new_price, new_qty, new_rl)
 
                     if result["success"]:
-                        st.session_state["product_updated"] = result["message"]
+                        st.mosession_state["product_updated"] = result["message"]
 
                         
                 
