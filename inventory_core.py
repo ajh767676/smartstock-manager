@@ -345,7 +345,7 @@ def reset_database():
         ("soda", 1.25, 40, 10, None),
         ("candy", 1.75, 30, 8, None),
         ("water", 0.50, 60, 15, None),
-        ("energy drink", 3.25, 12, 5, None),
+        ("energy drink", 3.25, 30, 5, None),
         ("protein bar", 2.25, 18, 6, None),
     ]
 
