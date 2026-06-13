@@ -27,6 +27,7 @@ from inventory_core import (
     get_inventory_value,
     delete_order_db,
     init_database,
+    create_cart_order_db,
 )
 
 def img_to_base64(path):
@@ -583,8 +584,10 @@ elif page == "AI Forecast":
 
 # ================= ORDERS =================
 elif page == "Orders":
+    if "cart" not in st.session_state:
+        st.session_state["cart"] = []
 
-    st.subheader("🧾 Create Order")
+    st.subheader("🛒 Shopping Cart")
 
     products = get_products()
 
@@ -609,7 +612,7 @@ elif page == "Orders":
         # 👇 Show stock (nice for demo)
         st.caption(f"Available stock: {max_qty}")
 
-        if max_qty == 0:
+        if max_qty <= 0:
             st.warning("⚠️ Out of stock")
         else:
             quantity = st.number_input(
@@ -618,21 +621,50 @@ elif page == "Orders":
                 max_value=max_qty
             )
 
-            if st.button("Create Order"):
+            if st.button("Add to Cart"):
 
                 stock = int(current["quantity"])
 
                 if quantity > stock:
                     st.error(f"❌ Not enough inventory. Available: {stock}")
                 else:
-                    result = create_order_db(pid, quantity)
+                    st.session_state["cart"].append({
+                        "product_id": pid,
+                        "name": product_name,
+                        "quantity": quantity,
+                        "price": float(current["price"])
+                    })
 
-                    if result["success"]:
-                        st.success(result["message"])
-                    else:
-                        st.error(result["message"])
-
+                    st.success(f"Added {quantity} {product_name} to cart")
                     st.rerun()
+            if st.session_state["cart"]:
+                st.subheader("🛒 Cart")
+
+                cart_df = pd.DataFrame(st.session_state["cart"])
+                cart_df["total"] = cart_df["quantity"] * cart_df["price"]
+
+                display_cart = cart_df[["name", "quantity", "price", "total"]].copy()
+                display_cart["price"] = display_cart["price"].apply(lambda x: f"${x:.2f}")
+                display_cart["total"] = display_cart["total"].apply(lambda x: f"${x:.2f}")
+
+                st.dataframe(display_cart, use_container_width=True, hide_index=True)
+
+                cart_total = cart_df["total"].sum()
+                st.subheader(f"💰 Cart Total: ${cart_total:.2f}")
+
+            if st.button("Checkout"):
+                result = create_cart_order_db(st.session_state["cart"])
+
+                if result["success"]:
+                    st.session_state["cart"] = []
+                    st.success(result["message"])
+                    st.rerun()
+                else:
+                    st.error(result["message"])
+            
+            if st.button("Clear Cart"):
+                st.session_state["cart"] = []
+                st.rerun()
         st.divider()
 
         st.subheader("## 📋 Order History")

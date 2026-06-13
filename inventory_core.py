@@ -157,6 +157,68 @@ def create_order_db(product_id, order_qty):
 
     return {"success": True, "message": f"Order {order_id} created successfully!", "order_id": order_id}
 
+def create_cart_order_db(cart_items):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    # Check stock for every item before creating order
+    for item in cart_items:
+        product_id = item["product_id"]
+        order_qty = int(item["quantity"])
+
+        cursor.execute(
+            "SELECT quantity FROM Products WHERE product_id = ?",
+            (product_id,)
+        )
+        result = cursor.fetchone()
+
+        if result is None:
+            conn.close()
+            return {"success": False, "message": f"Product not found: {item['name']}"}
+
+        stock = result[0]
+
+        if order_qty > stock:
+            conn.close()
+            return {
+                "success": False,
+                "message": f"Not enough stock for {item['name']}. Available: {stock}"
+            }
+
+    # Create one order
+    order_date = datetime.now().strftime("%Y-%m-%d")
+
+    cursor.execute("""
+        INSERT INTO Orders (order_date)
+        VALUES (?)
+    """, (order_date,))
+
+    order_id = cursor.lastrowid
+
+    # Add each cart item to the order and reduce inventory
+    for item in cart_items:
+        product_id = item["product_id"]
+        order_qty = int(item["quantity"])
+
+        cursor.execute("""
+            INSERT INTO OrderItems (order_id, product_id, quantity)
+            VALUES (?, ?, ?)
+        """, (order_id, product_id, order_qty))
+
+        cursor.execute("""
+            UPDATE Products
+            SET quantity = quantity - ?
+            WHERE product_id = ?
+        """, (order_qty, product_id))
+
+    conn.commit()
+    conn.close()
+
+    return {
+        "success": True,
+        "message": f"Order {order_id} created with {len(cart_items)} items!",
+        "order_id": order_id
+    }
 
 def get_orders_with_total():
     conn = get_connection()
