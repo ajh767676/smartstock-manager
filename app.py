@@ -118,7 +118,7 @@ elif section == "Insights":
     page = st.sidebar.radio("", ["Analytics", "AI Forecast"])
 st.sidebar.markdown("---")
 
-if st.sidebar.button("🧪 Load Demo Data"):
+if st.sidebar.button("🎯 Load Sample Store Data"):
     reset_database()
     st.success("Demo data loaded successfully!")
     st.rerun()

@@ -9,9 +9,14 @@ AI-powered inventory and order management system built with Python, SQLite, Stre
 
 ## Live Demo
 
-🚀 Live Application:
-
 https://smartstock-manager.streamlit.app/
+
+Demo users can:
+- Load sample store data
+- Manage inventory
+- Create customer orders
+- Use a shopping cart checkout
+- View analytics and AI forecasting
 
 ### Demo Access
 
