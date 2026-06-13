@@ -27,7 +27,7 @@ from inventory_core import (
     get_inventory_value,
     delete_order_db,
     init_database,
-    create_cart_order_db,
+    create_cart_order_db
 )
 
 def img_to_base64(path):
