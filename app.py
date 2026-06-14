@@ -718,6 +718,25 @@ elif page == "Orders":
             st.write(f"**Total:** ${receipt['grand_total']:.2f}")
             st.write(f"**Payment:** {receipt['payment_method']}")
 
+            receipt_text = f"SmartStock Manager Receipt\n"
+            receipt_text += f"Order #{receipt['order_id']}\n\n"
+
+            for item in receipt["items"]:
+                line_total = item["quantity"] * item["price"]
+                receipt_text += f"{item['name'].title()} x{item['quantity']} - ${line_total:.2f}\n"
+
+            receipt_text += f"\nSubtotal: ${receipt['subtotal']:.2f}"
+            receipt_text += f"\nTax: ${receipt['tax']:.2f}"
+            receipt_text += f"\nTotal: ${receipt['grand_total']:.2f}"
+            receipt_text += f"\nPayment: {receipt['payment_method']}"
+
+            st.download_button(
+                "📄 Download Receipt",
+                data=receipt_text,
+                file_name=f"receipt_{receipt['order_id']}.txt",
+                mime="text/plain"
+            )
+
         st.divider()
 
         # ================= ORDER HISTORY =================
