@@ -756,30 +756,37 @@ elif page == "Orders":
             orders = orders[orders["name"].str.contains(search_orders, case=False)]
 
         if not orders.empty:
-            orders["price"] = orders["price"].apply(lambda x: f"${x:.2f}")
-            orders["total_price"] = orders["total_price"].apply(lambda x: f"${x:.2f}")
+            st.markdown("### 🧾 Orders")
 
-            display_orders = orders.drop(columns=["product_id"])
+            for order_id, group in orders.groupby("order_id", sort=False):
+                order_total = group["total_price"].sum()
 
-            display_orders = display_orders.rename(columns={
-                "order_id": "Order ID",
-                "name": "Product",
-                "quantity": "Quantity",
-                "price": "Price",
-                "total_price": "Total"
-            })
+                with st.expander(f"Order #{order_id} — Total: ${order_total:.2f}"):
+                    display_group = group[["name", "quantity", "price", "total_price"]].copy()
 
-            display_orders["Product"] = display_orders["Product"].str.title()
+                    display_group["name"] = display_group["name"].str.title()
+                    display_group["price"] = display_group["price"].apply(lambda x: f"${x:.2f}")
+                    display_group["total_price"] = display_group["total_price"].apply(lambda x: f"${x:.2f}")
 
-            st.dataframe(
-                display_orders,
-                use_container_width=True,
-                hide_index=True
-            )
+                    display_group = display_group.rename(columns={
+                        "name": "Product",
+                        "quantity": "Quantity",
+                        "price": "Price",
+                        "total_price": "Line Total"
+                    })
+
+                    st.dataframe(
+                        display_group,
+                        use_container_width=True,
+                        hide_index=True
+                 )
 
             st.subheader("❌ Cancel Order")
 
-            order_ids = sorted(orders["order_id"].unique())
+            order_ids = sorted(
+                orders["order_id"].unique(),
+                reverse=True
+            )
 
             selected_order = st.selectbox(
                 "Select Order to Cancel",
