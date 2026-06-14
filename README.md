@@ -138,7 +138,6 @@ The project simulates a real-world inventory and order management platform for s
 
 ## Future Enhancements
 
-- Multi-item order support
 - User role management (Admin / Employee)
 - Enhanced forecasting models
 - Cloud database integration

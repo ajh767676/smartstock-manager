@@ -284,7 +284,7 @@ elif page == "Products":
                     result = update_product(pid, new_name, new_price, new_qty, new_rl)
 
                     if result["success"]:
-                        st.mosession_state["product_updated"] = result["message"]
+                        st.session_state["product_updated"] = result["message"]
 
                         
                 
@@ -584,6 +584,7 @@ elif page == "AI Forecast":
 
 # ================= ORDERS =================
 elif page == "Orders":
+
     if "cart" not in st.session_state:
         st.session_state["cart"] = []
 
@@ -593,6 +594,7 @@ elif page == "Orders":
 
     if products.empty:
         st.warning("No products available.")
+
     else:
         product_map = {
             row["name"]: row["product_id"]
@@ -609,11 +611,11 @@ elif page == "Orders":
 
         max_qty = int(current["quantity"])
 
-        # 👇 Show stock (nice for demo)
         st.caption(f"Available stock: {max_qty}")
 
         if max_qty <= 0:
             st.warning("⚠️ Out of stock")
+
         else:
             quantity = st.number_input(
                 "Quantity",
@@ -622,7 +624,6 @@ elif page == "Orders":
             )
 
             if st.button("Add to Cart"):
-
                 stock = int(current["quantity"])
 
                 if quantity > stock:
@@ -637,37 +638,90 @@ elif page == "Orders":
 
                     st.success(f"Added {quantity} {product_name} to cart")
                     st.rerun()
-            if st.session_state["cart"]:
-                st.subheader("🛒 Cart")
 
-                cart_df = pd.DataFrame(st.session_state["cart"])
-                cart_df["total"] = cart_df["quantity"] * cart_df["price"]
+        # ================= CART DISPLAY =================
+        if st.session_state["cart"]:
+            st.subheader("🛒 Cart")
 
-                display_cart = cart_df[["name", "quantity", "price", "total"]].copy()
-                display_cart["price"] = display_cart["price"].apply(lambda x: f"${x:.2f}")
-                display_cart["total"] = display_cart["total"].apply(lambda x: f"${x:.2f}")
+            cart_df = pd.DataFrame(st.session_state["cart"])
+            cart_df["total"] = cart_df["quantity"] * cart_df["price"]
 
-                st.dataframe(display_cart, use_container_width=True, hide_index=True)
+            display_cart = cart_df[["name", "quantity", "price", "total"]].copy()
+            display_cart["name"] = display_cart["name"].str.title()
+            display_cart["price"] = display_cart["price"].apply(lambda x: f"${x:.2f}")
+            display_cart["total"] = display_cart["total"].apply(lambda x: f"${x:.2f}")
 
-                cart_total = cart_df["total"].sum()
-                st.subheader(f"💰 Cart Total: ${cart_total:.2f}")
+            st.dataframe(
+                display_cart,
+                use_container_width=True,
+                hide_index=True
+            )
 
-            if st.button("Checkout"):
-                result = create_cart_order_db(st.session_state["cart"])
+            subtotal = cart_df["total"].sum()
+            tax = subtotal * 0.085
+            grand_total = subtotal + tax
 
-                if result["success"]:
+            st.write(f"**Subtotal:** ${subtotal:.2f}")
+            st.write(f"**Tax:** ${tax:.2f}")
+            st.subheader(f"💰 Total: ${grand_total:.2f}")
+
+            payment_method = st.selectbox(
+                "Payment Method",
+                ["Cash", "Card", "Mobile Pay"]
+            )
+
+            col_checkout, col_clear = st.columns(2)
+
+            with col_checkout:
+                if st.button("Checkout"):
+                    result = create_cart_order_db(st.session_state["cart"])
+
+                    if result["success"]:
+                        st.session_state["last_receipt"] = {
+                            "order_id": result["order_id"],
+                            "items": st.session_state["cart"].copy(),
+                            "subtotal": subtotal,
+                            "tax": tax,
+                            "grand_total": grand_total,
+                            "payment_method": payment_method
+                        }
+
+                        st.session_state["cart"] = []
+                        st.success(result["message"])
+                        st.rerun()
+
+                    else:
+                        st.error(result["message"])
+
+            with col_clear:
+                if st.button("Clear Cart"):
                     st.session_state["cart"] = []
-                    st.success(result["message"])
                     st.rerun()
-                else:
-                    st.error(result["message"])
-            
-            if st.button("Clear Cart"):
-                st.session_state["cart"] = []
-                st.rerun()
+
+        # ================= RECEIPT =================
+        if "last_receipt" in st.session_state:
+            receipt = st.session_state["last_receipt"]
+
+            st.divider()
+            st.subheader("🧾 Receipt")
+
+            st.write(f"**Order #{receipt['order_id']}**")
+
+            for item in receipt["items"]:
+                line_total = item["quantity"] * item["price"]
+                st.write(
+                    f"- {item['name'].title()} x{item['quantity']} — ${line_total:.2f}"
+                )
+
+            st.write(f"**Subtotal:** ${receipt['subtotal']:.2f}")
+            st.write(f"**Tax:** ${receipt['tax']:.2f}")
+            st.write(f"**Total:** ${receipt['grand_total']:.2f}")
+            st.write(f"**Payment:** {receipt['payment_method']}")
+
         st.divider()
 
-        st.subheader("## 📋 Order History")
+        # ================= ORDER HISTORY =================
+        st.subheader("📋 Order History")
 
         from inventory_core import get_orders_with_total
 
@@ -676,10 +730,10 @@ elif page == "Orders":
         except:
             orders = pd.DataFrame()
             st.error("Error loading orders")
-        
+
         search_orders = st.text_input("🔍 Search orders by product")
 
-        if search_orders:
+        if search_orders and not orders.empty:
             orders = orders[orders["name"].str.contains(search_orders, case=False)]
 
         if not orders.empty:
@@ -696,6 +750,8 @@ elif page == "Orders":
                 "total_price": "Total"
             })
 
+            display_orders["Product"] = display_orders["Product"].str.title()
+
             st.dataframe(
                 display_orders,
                 use_container_width=True,
@@ -709,18 +765,18 @@ elif page == "Orders":
             selected_order = st.selectbox(
                 "Select Order to Cancel",
                 order_ids
-        )
+            )
 
-        if st.button("Cancel Selected Order"):
-            result = delete_order_db(selected_order)
+            if st.button("Cancel Selected Order"):
+                result = delete_order_db(selected_order)
 
-            if result["success"]:
-                st.success(result["message"])
-                st.rerun()
-            else:
-                st.error(result["message"])
+                if result["success"]:
+                    st.success(result["message"])
+                    st.rerun()
+                else:
+                    st.error(result["message"])
 
-else:
-    st.info("No orders yet.")
+        else:
+            st.info("No orders yet.")
 
 
