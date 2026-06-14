@@ -34,9 +34,13 @@ Use the built-in Demo User option on the login page or create your own account.
 - Inventory value calculations
 
 ### Order Management
-- Create customer orders
+- Multi-item shopping cart
+- Customer checkout workflow
 - Automatic inventory updates
-- Order history tracking
+- Tax calculation
+- Receipt generation
+- Receipt download
+- Order history grouped by order
 - Order cancellation with inventory restoration
 
 ### Analytics Dashboard
@@ -119,7 +123,13 @@ streamlit run app.py
 
 ![AI Forecast](screenshots/ai-forecast.png)
 
----
+### Shopping Cart & Checkout
+
+![Shopping Cart](screenshots/shopping-cart.png)
+
+### Order History & Order Management
+
+![Orders](screenshots/orders-history.png)
 
 ## Project Purpose
 
@@ -132,14 +142,15 @@ SmartStock Manager was developed as a Computer Science capstone project to demon
 - User Authentication
 - Business Process Automation
 
-The project simulates a real-world inventory and order management platform for small businesses.
+The project simulates a real-world retail inventory and point-of-sale system for small businesses. It demonstrates inventory management, customer checkout workflows, analytics reporting, machine learning forecasting, user authentication, and business process automation.
 
 ---
 
 ## Future Enhancements
 
-- User role management (Admin / Employee)
-- Enhanced forecasting models
-- Cloud database integration
-- Email notifications for low inventory
-- REST API integration
+- Role-based access control (Admin / Employee)
+- REST API using FastAPI
+- Cloud database deployment
+- Automated email alerts for low inventory
+- Advanced forecasting models
+- Automated testing with Pytest

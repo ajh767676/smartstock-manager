@@ -740,7 +740,7 @@ elif page == "Orders":
         st.divider()
 
         # ================= ORDER HISTORY =================
-        st.subheader("📋 Order History")
+        st.subheader("📋 Search Orders")
 
         from inventory_core import get_orders_with_total
 
@@ -755,9 +755,12 @@ elif page == "Orders":
         if search_orders and not orders.empty:
             orders = orders[orders["name"].str.contains(search_orders, case=False)]
 
+        
         if not orders.empty:
-            st.markdown("### 🧾 Orders")
 
+            st.metric("Total Orders", orders["order_id"].nunique())
+
+            st.markdown("### 📄 Orders")
             for order_id, group in orders.groupby("order_id", sort=False):
                 order_total = group["total_price"].sum()
 
