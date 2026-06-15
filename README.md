@@ -65,6 +65,13 @@ Use the built-in Demo User option on the login page or create your own account.
 - Password hashing
 - Session management
 
+### Automated Testing
+- Automated unit testing with Pytest
+- Product creation validation tests
+- Order workflow testing
+- Inventory validation
+- Supports future regression testing as new features are added
+
 ---
 
 ## Technologies Used
@@ -76,6 +83,7 @@ Use the built-in Demo User option on the login page or create your own account.
 - Plotly
 - Scikit-Learn
 - Git / GitHub
+- Pytest
 
 ---
 
@@ -153,4 +161,4 @@ The project simulates a real-world retail inventory and point-of-sale system for
 - Cloud database deployment
 - Automated email alerts for low inventory
 - Advanced forecasting models
-- Automated testing with Pytest
+- Expanded test coverage for orders and inventory workflows
