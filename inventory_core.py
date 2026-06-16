@@ -1,4 +1,5 @@
 import sqlite3
+from unittest import result
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 from datetime import datetime
@@ -490,7 +491,8 @@ def init_database():
         CREATE TABLE IF NOT EXISTS Users (
             user_id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT UNIQUE NOT NULL,
-            password_hash TEXT NOT NULL
+            password_hash TEXT NOT NULL,
+            role TEXT DEFAULT 'employee'
         )
     """)
 
@@ -503,15 +505,15 @@ import hashlib
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
-def create_user(username, password):
+def create_user(username, password, role="employee"):
     conn = get_connection()
     cursor = conn.cursor()
 
     try:
         cursor.execute("""
-            INSERT INTO Users (username, password_hash)
-            VALUES (?, ?)
-        """, (username, hash_password(password)))
+            INSERT INTO Users (username, password_hash, role)
+            VALUES (?, ?, ?)
+        """, (username, hash_password(password), role))
         conn.commit()
         success = True
     except sqlite3.IntegrityError:
@@ -525,16 +527,24 @@ def authenticate_user(username, password):
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT password_hash FROM Users WHERE username = ?
+        SELECT password_hash, role
+        FROM Users
+        WHERE username = ?
     """, (username,))
     result = cursor.fetchone()
 
     conn.close()
 
     if result is None:
-        return False
+        return None
 
-    return result[0] == hash_password(password)
+    stored_hash = result[0]
+    role = result[1]
+
+    if stored_hash == hash_password(password):
+        return role
+
+    return None
 
 
 def get_revenue_over_time():

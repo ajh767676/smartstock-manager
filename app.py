@@ -67,6 +67,8 @@ from inventory_core import authenticate_user, create_user
 # --- LOGIN SYSTEM ---
 if "logged_in" not in st.session_state:
     st.session_state["logged_in"] = False
+if "role" not in st.session_state:
+    st.session_state["role"] = "employee"
 
 if not st.session_state["logged_in"]:
     st.title("🔐 Login")
@@ -75,8 +77,12 @@ if not st.session_state["logged_in"]:
     password = st.text_input("Password", type="password")
 
     if st.button("Login"):
-        if authenticate_user(username, password):
+        role = authenticate_user(username, password)
+
+        if role:
             st.session_state["logged_in"] = True
+            st.session_state["username"] = username
+            st.session_state["role"] = role
             st.rerun()
         else:
             st.error("Invalid username or password")
@@ -90,7 +96,9 @@ if not st.session_state["logged_in"]:
     new_pass = st.text_input("New Password", type="password")
 
     if st.button("Create Account"):
-        if create_user(new_user, new_pass):
+        if not new_user.strip() or not new_pass.strip():
+            st.error("Username and password are required.")
+        elif create_user(new_user.strip(), new_pass.strip()):
             st.success("Account created! You can now log in.")
         else:
             st.error("Username already exists.")
