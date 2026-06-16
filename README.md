@@ -69,6 +69,7 @@ Use the built-in Demo User option on the login page or create your own account.
 - Automated unit testing with Pytest
 - Product creation validation tests
 - Order workflow testing
+- Order cancellation testing
 - Inventory validation
 - Supports future regression testing as new features are added
 
@@ -161,4 +162,4 @@ The project simulates a real-world retail inventory and point-of-sale system for
 - Cloud database deployment
 - Automated email alerts for low inventory
 - Advanced forecasting models
-- Expanded test coverage for orders and inventory workflows
+- Expanded test coverage and integration testing
