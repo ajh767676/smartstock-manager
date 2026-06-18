@@ -64,6 +64,7 @@ Use the built-in Demo User option on the login page or create your own account.
 - User authentication
 - Password hashing
 - Session management
+- Role-Based Access Control (Admin / Employee)
 
 ### Automated Testing
 - Automated unit testing with Pytest
@@ -163,3 +164,4 @@ The project simulates a real-world retail inventory and point-of-sale system for
 - Automated email alerts for low inventory
 - Advanced forecasting models
 - Expanded test coverage and integration testing
+- Additional user roles and permissions

@@ -88,6 +88,8 @@ if not st.session_state["logged_in"]:
             st.error("Invalid username or password")
     if st.button("Continue as Demo User"):
         st.session_state["logged_in"] = True
+        st.session_state["username"] = "demo"
+        st.session_state["role"] = "admin"
         st.rerun()
 
     st.info("No account? Create one below.")
@@ -107,23 +109,40 @@ if not st.session_state["logged_in"]:
 
 # Sidebar (after Page Config)
 st.sidebar.title("🧠 SmartStock Manager")
+
+st.sidebar.caption(
+    f"Logged in as: {st.session_state['role'].title()}"
+)
+
 st.sidebar.markdown("Convenience store inventory, sales, and AI forecasting system")
 st.sidebar.markdown("---")
 
 
 # Sidebar navigation
-section = st.sidebar.selectbox(
-    "Section",
-    ["Dashboard", "Management", "Insights"]
-)
+if st.session_state["role"] == "admin":
+    section = st.sidebar.selectbox(
+        "Section",
+        ["Dashboard", "Management", "Insights"]
+    )
+else:
+    section = "Employee"
 
-if section == "Dashboard":
-    page = "Dashboard"
-elif section == "Management":
-    page = st.sidebar.radio("", ["Products", "Orders"])
+if st.session_state["role"] == "admin":
 
-elif section == "Insights":
-    page = st.sidebar.radio("", ["Analytics", "AI Forecast"])
+    if section == "Dashboard":
+        page = "Dashboard"
+
+    elif section == "Management":
+        page = st.sidebar.radio("", ["Products", "Orders"])
+
+    elif section == "Insights":
+        page = st.sidebar.radio("", ["Analytics", "AI Forecast"])
+
+else:
+    page = st.sidebar.radio(
+        "Employee Access",
+        ["Orders"]
+    )
 st.sidebar.markdown("---")
 
 if st.sidebar.button("🎯 Load Sample Store Data"):
