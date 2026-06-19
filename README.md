@@ -76,6 +76,13 @@ Use the built-in Demo User option on the login page or create your own account.
 
 ---
 
+### REST API
+
+- FastAPI backend
+- GET /products endpoint
+- Interactive Swagger documentation
+- JSON API responses
+
 ## Technologies Used
 
 - Python
@@ -86,6 +93,8 @@ Use the built-in Demo User option on the login page or create your own account.
 - Scikit-Learn
 - Git / GitHub
 - Pytest
+- FastAPI
+- Uvicorn
 
 ---
 
@@ -159,9 +168,9 @@ The project simulates a real-world retail inventory and point-of-sale system for
 ## Future Enhancements
 
 - Role-based access control (Admin / Employee)
-- REST API using FastAPI
 - Cloud database deployment
 - Automated email alerts for low inventory
 - Advanced forecasting models
 - Expanded test coverage and integration testing
 - Additional user roles and permissions
+- Additional REST API endpoints (Orders, Analytics, Forecasting)
