@@ -79,8 +79,9 @@ Use the built-in Demo User option on the login page or create your own account.
 ### REST API
 
 - FastAPI backend
-- GET /products endpoint
 - Interactive Swagger documentation
+- GET /products endpoint
+- GET /orders endpoint
 - JSON API responses
 
 ## Technologies Used
@@ -149,6 +150,10 @@ streamlit run app.py
 ### Order History & Order Management
 
 ![Orders](screenshots/orders-history.png)
+
+### API Documentation
+
+![API Documentation](screenshots/api-docs.png)
 
 ## Project Purpose
 
