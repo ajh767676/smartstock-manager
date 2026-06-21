@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from inventory_core import get_products, get_orders_with_total
+from inventory_core import get_products, get_orders_with_total, forecast_demand_df
 
 app = FastAPI()
 
@@ -18,3 +18,9 @@ def products():
     products_df = get_products()
 
     return products_df.to_dict(orient="records")
+
+@app.get("/forecast")
+def forecast():
+    forecast_df = forecast_demand_df()
+
+    return forecast_df.to_dict(orient="records")
