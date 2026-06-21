@@ -77,11 +77,11 @@ Use the built-in Demo User option on the login page or create your own account.
 ---
 
 ### REST API
-
 - FastAPI backend
 - Interactive Swagger documentation
 - GET /products endpoint
 - GET /orders endpoint
+- GET /forecast endpoint
 - JSON API responses
 
 ## Technologies Used
@@ -129,6 +129,27 @@ streamlit run app.py
 
 ---
 
+## System Architecture
+
+Frontend:
+- Streamlit
+
+Backend:
+- FastAPI
+- Python Business Logic
+
+Database:
+- SQLite
+
+Machine Learning:
+- Scikit-Learn Linear Regression
+
+Testing:
+- Pytest
+
+Deployment:
+- Streamlit Cloud
+
 ## Screenshots
 
 ### Dashboard
@@ -163,6 +184,7 @@ SmartStock Manager was developed as a Computer Science capstone project to demon
 - Database Design
 - Data Analytics
 - Machine Learning Integration
+- REST API Development
 - User Authentication
 - Business Process Automation
 
@@ -178,4 +200,4 @@ The project simulates a real-world retail inventory and point-of-sale system for
 - Advanced forecasting models
 - Expanded test coverage and integration testing
 - Additional user roles and permissions
-- Additional REST API endpoints (Orders, Analytics, Forecasting)
+- Additional REST API endpoints (Suppliers, Users, Analytics)
