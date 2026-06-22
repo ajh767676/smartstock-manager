@@ -96,6 +96,7 @@ Use the built-in Demo User option on the login page or create your own account.
 - Pytest
 - FastAPI
 - Uvicorn
+- Render
 
 ---
 
@@ -148,7 +149,26 @@ Testing:
 - Pytest
 
 Deployment:
-- Streamlit Cloud
+- Streamlit Cloud (Frontend)
+- Render (FastAPI Backend)
+
+---
+
+## Live API
+
+Swagger Documentation:
+
+https://smartstock-manager-k080.onrender.com/docs
+
+Available Endpoints:
+
+```text
+GET /products
+GET /orders
+GET /forecast
+```
+
+The API is deployed using FastAPI and Render and provides JSON responses for inventory, order history, and demand forecasting data.
 
 ## Screenshots
 
